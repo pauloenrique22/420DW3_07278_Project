@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2024 at 04:09 PM
+-- Generation Time: Mar 23, 2024 at 05:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,9 +35,11 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `permissions_id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_name` varchar(20) NOT NULL,
   `permission_description` varchar(50) NOT NULL,
+  `user_group_id` int(11) NOT NULL,
   `date_created` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   `date_modified` datetime(6) NOT NULL DEFAULT current_timestamp(6),
-  PRIMARY KEY (`permissions_id`)
+  PRIMARY KEY (`permissions_id`),
+  KEY `fk_group_user_id_permissions` (`user_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -56,7 +58,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_created` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   `date_modified` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `idx_unique_username` (`username`)
+  UNIQUE KEY `idx_unique_username` (`username`),
+  KEY `fk_user_group_id_users` (`user_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -67,13 +70,29 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 DROP TABLE IF EXISTS `user_groups`;
 CREATE TABLE IF NOT EXISTS `user_groups` (
-  `user_groups_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(30) NOT NULL,
   `group_description` varchar(50) NOT NULL,
   `date_created` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   `date_modified` datetime(6) NOT NULL DEFAULT current_timestamp(6),
-  PRIMARY KEY (`user_groups_id`)
+  PRIMARY KEY (`user_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD CONSTRAINT `fk_group_user_id_permissions` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`user_group_id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_user_group_id_users` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`user_group_id`);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
