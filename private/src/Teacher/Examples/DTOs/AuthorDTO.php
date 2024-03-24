@@ -25,6 +25,6 @@ class AuthorDTO extends AbstractDTO {
      * @inheritDoc
      */
     public function getDatabaseTableName() : string {
-        // TODO: Implement getDatabaseTableName() method.
+        // TODO: Implement getDatabaseTableName() method.;
     }
 }
