@@ -15,7 +15,7 @@ use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
 class User extends AbstractDTO {
-    public const TABLE_NAME = "Users";
+    public const TABLE_NAME = "users";
     
     /**
      * TODO: Function documentation getDatabaseTableName
