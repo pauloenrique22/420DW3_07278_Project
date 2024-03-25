@@ -18,6 +18,13 @@ class UserGroup extends AbstractDTO {
     
     public const TABLE_NAME = "UserGroups";
     
+    /**
+     * TODO: Function documentation getDatabaseTableName
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-24
+     */
     public function getDatabaseTableName() : string {
         return self::TABLE_NAME;
     }

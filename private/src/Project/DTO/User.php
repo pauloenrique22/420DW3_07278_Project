@@ -17,6 +17,13 @@ use Teacher\GivenCode\Exceptions\ValidationException;
 class User extends AbstractDTO {
     public const TABLE_NAME = "Users";
     
+    /**
+     * TODO: Function documentation getDatabaseTableName
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-24
+     */
     public function getDatabaseTableName() : string {
         return self::TABLE_NAME;
     }
