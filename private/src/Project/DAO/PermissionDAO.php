@@ -15,14 +15,14 @@ use Teacher\GivenCode\Abstracts\IDAO;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
-class PermissionDAO implements IDAO{
+class PermissionDAO implements IDAO {
     
-    private const GET_QUERY_SELECT = "SELECT * FROM `" . Permission::TABLE_NAME . "` WHERE `permission_id` = :permission_id;";
-    private const CREATE_QUERY_INSERT = "INSERT INTO `" . Permission::TABLE_NAME .
+    private const GET_QUERY_SELECT = "SELECT * FROM `" . Permissions::TABLE_NAME . "` WHERE `permission_id` = :permission_id;";
+    private const CREATE_QUERY_INSERT = "INSERT INTO `" . Permissions::TABLE_NAME .
     "` (`permission_name`, `permission_description`, `user_group_id`) VALUES (:permission_name, :permission_description, :user_group_id);";
-    private const UPDATE_QUERY = "UPDATE `" . Permission::TABLE_NAME .
+    private const UPDATE_QUERY = "UPDATE `" . Permissions::TABLE_NAME .
     "` SET `permission_name` = :permission_name, `permission_description` = :permission_description, `user_group_id` = :user_group_id WHERE `permission_id` = :permission_id;";
-    private const DELETE_QUERY = "DELETE FROM `" . Permission::TABLE_NAME . "` WHERE `permission_id` = :permission_id;";
+    private const DELETE_QUERY = "DELETE FROM `" . Permissions::TABLE_NAME . "` WHERE `permission_id` = :permission_id;";
     
     public function __construct() {}
     
