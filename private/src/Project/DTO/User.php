@@ -17,6 +17,20 @@ use Teacher\GivenCode\Exceptions\ValidationException;
 class User extends AbstractDTO {
     public const TABLE_NAME = "users";
     
+    private const USERNAME_MAX_LENGTH = 30;
+    private const EMAIL_MAX_LENGTH = 30;
+    private const PASSWORD_MAX_LENGTH = 30;
+    
+    
+    /* Variable */
+    private string $username;
+    private string $password;
+    private string $email;
+    private int $userGroupId;
+    private ?DateTime $createdAt;
+    private ?DateTime $updatedAt;
+    
+    
     /**
      * TODO: Function documentation getDatabaseTableName
      * @return string
@@ -27,4 +41,215 @@ class User extends AbstractDTO {
     public function getDatabaseTableName() : string {
         return self::TABLE_NAME;
     }
+    
+    
+    protected function __construct() {
+        parent::__construct();
+    }
+    
+    /**
+     * TODO: Function documentation constructorFromValues
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @param int    $user_group_id
+     * @return User
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public static function constructorFromValues(string $username, string $password, string $email, int $user_group_id) : User {
+        $object = new self();
+        $object->setUsername($username);
+        $object->setPassword($password);
+        $object->setEmail($email);
+        $object->setUserGroupId($user_group_id);
+        return $object;
+    }
+    
+    /**
+     * TODO: Function documentation fromDbArray
+     *
+     * @param array $dbAssocArray
+     * @return User
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public static function fromDbArray(array $dbAssocArray) : User {
+        $object = new self();
+        //$object->setId((int) $dbAssocArray['user_id']);
+        $object->setUsername($dbAssocArray['username']);
+        $object->setPassword($dbAssocArray['password']);
+        $object->setEmail($dbAssocArray['email']);
+        $object->setUserGroupId($dbAssocArray['user_group_id']);
+        $object->setCreatedAt(
+            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_created"])
+        );
+        $object->setUpdatedAt(
+            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_modified"])
+        );
+        return $object;
+    }
+    
+    /**
+     * TODO: Function documentation setUsername
+     *
+     * @param string $username
+     * @return void
+     * @throws ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setUsername(string $username) : void {
+        if (mb_strlen($username) > self::USERNAME_MAX_LENGTH) {
+            throw new ValidationException("Please enter again the Username. Username must not be longer than " . self::USERNAME_MAX_LENGTH . " characters.");
+        }
+        $this->username = $username;
+    }
+    
+    /**
+     * TODO: Function documentation getUsername
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getUsername() : string {
+        return $this->username;
+    }
+    
+    /**
+     * TODO: Function documentation setPassword
+     *
+     * @param string $password
+     * @return void
+     * @throws ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setPassword(string $password) : void {
+        if (mb_strlen($password) > self::PASSWORD_MAX_LENGTH) {
+            throw new ValidationException("Please enter a new Password. Password must not be longer than " . self::PASSWORD_MAX_LENGTH . " characters.");
+        }
+        $this->password = $password;
+    }
+    
+    /**
+     * TODO: Function documentation getPassword
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getPassword() : string {
+        return $this->password;
+    }
+    
+    /**
+     * TODO: Function documentation getEmail
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getEmail() : string {
+        return $this->email;
+    }
+    
+    /**
+     * TODO: Function documentation setEmail
+     *
+     * @param string $email
+     * @return void
+     * @throws ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setEmail(string $email) : void {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new ValidationException("Invalid email format.");
+        }
+        if (mb_strlen($email) > self::EMAIL_MAX_LENGTH) {
+            throw new ValidationException("Please enter a new Email. Email must not be longer than " . self::EMAIL_MAX_LENGTH . " characters.");
+        }
+        $this->email = $email;
+    }
+    
+    /**
+     * TODO: Function documentation getCreatedAt
+     * @return DateTime|null
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getCreatedAt() : ?DateTime {
+        return $this->createdAt;
+    }
+    
+    /**
+     * TODO: Function documentation setCreatedAt
+     *
+     * @param DateTime|null $createdAt
+     * @return void
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setCreatedAt(?DateTime $createdAt) : void {
+        $this->createdAt = $createdAt;
+    }
+    
+    /**
+     * TODO: Function documentation getUpdatedAt
+     * @return DateTime|null
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getUpdatedAt() : ?DateTime {
+        return $this->updatedAt;
+    }
+    
+    /**
+     * TODO: Function documentation setUpdatedAt
+     *
+     * @param DateTime|null $updatedAt
+     * @return void
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setUpdatedAt(?DateTime $updatedAt) : void {
+        $this->updatedAt = $updatedAt;
+    }
+    
+    /**
+     * TODO: Function documentation getIsDeleted
+     * @return bool
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function getIsDeleted(): bool {
+        return $this->isDeleted;
+    }
+    
+    /**
+     * TODO: Function documentation setIsDeleted
+     *
+     * @param bool $isDeleted
+     * @return void
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-28
+     */
+    public function setIsDeleted(bool $isDeleted): void {
+        $this->isDeleted = $isDeleted;
+    }
+    
 }
