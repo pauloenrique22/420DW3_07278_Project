@@ -27,16 +27,15 @@ class PermissionDAO implements IDAO {
     public function __construct() {}
     
     /**
-     * {@inheritDoc}
-     * Retrieves a record of a certain DTO entity from the database and returns
-     * an appropriate DTO object instance.
+     * TODO: Function documentation getById
      *
-     * @param int $id The identifier value of the record to obtain.
-     * @return AbstractDTO|null The created object DTO instance or null if no record was found for the specified id.
-     *
+     * @param int $id
+     * @return Permissions|null
      * @throws RuntimeException
-     * @author Marc-Eric Boury
-     * @since  2024-03-17
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-31
+     *
      */
     public function getById(int $id) : ?Permissions {
         
@@ -49,7 +48,7 @@ class PermissionDAO implements IDAO {
         if (!$array) {
             throw new RuntimeException("No record found for permission_id# [$id].");
         }
-        return Permission::fromDbArray($array);
+        return Permissions::fromDbArray($array);
     }
     
     /**
