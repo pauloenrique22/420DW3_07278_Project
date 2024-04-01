@@ -153,6 +153,4 @@ class UserGroupsDAO implements IDAO {
         }
         return UserGroup::fromDbArray($array);
     }
-    
-    
 }
