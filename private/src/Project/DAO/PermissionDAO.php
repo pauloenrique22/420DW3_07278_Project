@@ -150,4 +150,31 @@ class PermissionDAO implements IDAO {
         return $this->getById($dto->getId());
     }
     
+    /**
+     * TODO: Function documentation getAll
+     * @return array
+     *
+     * @throws RuntimeException
+     * @throws \Teacher\GivenCode\Exceptions\ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-31
+     */
+    public function getAll() : array {
+        $connection = DBConnectionService::getConnection();
+        
+        try {
+            $statement = $connection->prepare("SELECT * FROM `" . Permissions::TABLE_NAME . "`;");
+            $statement->execute();
+            $array = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $permissions = [];
+            
+            foreach ($array as $row) {
+                $permissions[] = Permissions::fromDbArray($row);
+            }
+            return $permissions;
+        }catch (PDOException $e) {
+            throw new RuntimeException("Error while fetching all permissions: " . $e->getMessage());
+        }
+    }
 }
