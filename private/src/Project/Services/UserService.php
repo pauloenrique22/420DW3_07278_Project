@@ -8,77 +8,93 @@
  */
 
 use Project\DAO\UserGroupsDAO;
-use Project\DTO\UserGroup;
+use Project\DTO\UserGroups;
 use Teacher\GivenCode\Abstracts\IService;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
 class UserService implements IService {
-    
-    private UserGroupsDAO $userGroupsDao;
+    private UserDAO $userDao;
     
     public function __construct() {
-        $this->userGroupsDao = new UserGroupsDAO();
+        $this->userDao = new UserDAO();
     }
     
     /**
-     * TODO: Function documentation getAllUserGroup
+     * TODO: Function documentation createUser
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return User
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-31
+     */
+    public function createUser(string $username, string $password, string $email) : User {
+        $user = new User();
+        $user->setUsername($username);
+        $user->setPassword($password);
+        $user->setEmail($email);
+        return $this->userDao->create($user);
+    }
+    
+    /**
+     * TODO: Function documentation getAllUsers
      * @return array
      *
      * @author PE-Oliver89
      * @since  2024-03-31
      */
-    public function getAllUserGroup() : array {
-        return $this->userGroupsDao->getAll();
+    public function getAllUsers() : array {
+        return $this->userDao->getAll();
     }
     
     /**
-     * TODO: Function documentation getUserGroupById
+     * TODO: Function documentation getUserById
      *
      * @param int $id
-     * @return UserGroup|null
-     * @throws RuntimeException
-     * @throws ValidationException
+     * @return User|null
      *
      * @author PE-Oliver89
      * @since  2024-03-31
      */
-    public function getUserGroupById(int $id) : ?UserGroup {
-        return $this->userGroupsDao->getById($id);
+    public function getUserById(int $id) : ?User {
+        return $this->userDao->getById($id);
     }
     
     /**
-     * TODO: Function documentation createUserGroup
+     * TODO: Function documentation updateUser
      *
-     * @param UserGroup $userGroup
-     * @return UserGroup
-     * @throws RuntimeException
-     * @throws ValidationException
+     * @param int    $id
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return User
      *
      * @author PE-Oliver89
      * @since  2024-03-31
      */
-    public function createUserGroup(string $groupName, string $description) : UserGroup {
-        $user_group = new UserGroupDAO();
-        $user_group->setGroupName($groupName);
-        $user_group->setDescription($description);
-        return $this->userGroupsDao->create($user_group);
+    public function updateUser(int $id, string $username, string $password, string $email) : User {
+        $user = $this->userDao->getById($id);
+        $user->setUsername($username);
+        $user->setPassword($password); // Ensure password is hashed
+        $user->setEmail($email);
+        return $this->userDao->update($user);
     }
     
     /**
-     * TODO: Function documentation updateUserGroup
+     * TODO: Function documentation deleteUser
      *
-     * @param UserGroup $userGroup
-     * @return UserGroup
-     * @throws RuntimeException
-     * @throws ValidationException
+     * @param int  $id
+     * @param bool $hardDelete
+     * @return void
      *
      * @author PE-Oliver89
      * @since  2024-03-31
      */
-    public function updateUserGroup(UserGroup $userGroup) : UserGroup {
-        return $this->userGroupsDao->update($userGroup);
+    public function deleteUser(int $id, bool $hardDelete = false) : void {
+        $this->userDao->deleteById($id, $hardDelete);
     }
-    
     
 }
