@@ -36,11 +36,12 @@ body{
     transform: translateX(20%); /* Ainda corrige o alinhamento vertical */
 }
 
+/*
 .container:hover {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6); /* Alterando a sombra ao passar o mouse */
-    transform: scale(1.02); /* Aumentando ligeiramente o tamanho ao passar o mouse */
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Adicionando uma transição suave */
-}
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}*/
 
 
 .container h1 {
@@ -197,7 +198,7 @@ body{
     padding: 10px;
 }
 
-button-login::before {
+.button-login::before {
     content: '';
     border-radius: 1000px;
     min-width: calc(300px + 12px);
@@ -209,7 +210,7 @@ button-login::before {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: all .3s ease-in-out 0s;
+    transition: all .9s ease-in-out 0s;
 }
 
 .button-login:hover, .button-login:focus {
@@ -217,30 +218,48 @@ button-login::before {
     transform: translateY(-6px);
 }
 
-button-login:hover::before, button-login:focus::before {
+.button-login:hover::before, button-login:focus::before {
     opacity: 1;
 }
 
-button-login::after {
+.button-login::after {
     content: '';
-    width: 30px; height: 30px;
-    border-radius: 100%;
-    border: 6px solid #00FFCB;
+    /*width: 10px;height: 30px;*/
+    width: calc(100% + 1px); /* Largura ajustada para abranger todo o botão */
+    height: calc(100% + 1px); /* Altura ajustada para abranger todo o botão */
+    border-radius: 1px; /* Mesmo raio de borda do botão */
+    border-radius: 40%;
+    border: 0px solid #00FFCB;
     position: absolute;
     z-index: -1;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: ring 1.5s infinite;
+    animation: ring 3.5s infinite;
 }
 
-button-login:hover::after, button-login:focus::after {
+.button-login:hover::after, button-login:focus::after {
     animation: none;
     display: none;
 }
 
 @keyframes ring {
     0% {
+        transform: translate(-50%, -50%) scale(1);
+        border-color: #00FFCB;
+        box-shadow: 0 0 0 0 rgba(0, 255, 203, 0.4);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2); /* Expande o elemento */
+        border-color: #00FFCB;
+        box-shadow: 0 0 0 15px rgba(0, 255, 203, 0.4); /* Ajuste a sombra durante a expansão */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        border-color: #00FFCB;
+        box-shadow: 0 0 0 30px rgba(0, 255, 203, 0);
+    }
+    /*0% {
         width: 30px;
         height: 30px;
         opacity: 1;
@@ -249,5 +268,5 @@ button-login:hover::after, button-login:focus::after {
         width: 300px;
         height: 300px;
         opacity: 0;
-    }
+    }*/
 }
