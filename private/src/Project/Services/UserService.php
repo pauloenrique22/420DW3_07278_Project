@@ -7,12 +7,18 @@
  * (c) Copyright 2024 Paulo Enrique Oliveira Silva
  */
 
+use Project\DAO\UserDAO;
 use Project\DAO\UserGroupsDAO;
+
+use Project\DTO\User;
 use Project\DTO\UserGroups;
 use Teacher\GivenCode\Abstracts\IService;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
+/**
+ * TODO: Class documentation UserService
+ */
 class UserService implements IService {
     private UserDAO $userDao;
     

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * 420DW3_07278_Project User.php
  *
@@ -10,11 +11,16 @@
 namespace Project\DTO;
 
 use DateTime;
-use JetBrains\PhpStorm\Pure;
 use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
+/**
+ * TODO: Class documentation User
+ */
 class User extends AbstractDTO {
+    /**
+     * TODO: Constant documentation TABLE_NAME
+     */
     public const TABLE_NAME = "users";
     
     private const USERNAME_MAX_LENGTH = 30;
@@ -43,7 +49,7 @@ class User extends AbstractDTO {
     }
     
     
-    protected function __construct() {
+    public function __construct() {
         parent::__construct();
     }
     
@@ -56,10 +62,12 @@ class User extends AbstractDTO {
      * @param int    $user_group_id
      * @return User
      *
+     * @throws ValidationException
      * @author PE-Oliver89
      * @since  2024-03-28
      */
-    public static function constructorFromValues(string $username, string $password, string $email, int $user_group_id) : User {
+    public static function constructorFromValues(string $username, string $password, string $email,
+                                                 int    $user_group_id) : User {
         $object = new self();
         $object->setUsername($username);
         $object->setPassword($password);
@@ -105,7 +113,8 @@ class User extends AbstractDTO {
      */
     public function setUsername(string $username) : void {
         if (mb_strlen($username) > self::USERNAME_MAX_LENGTH) {
-            throw new ValidationException("Please enter again the Username. Username must not be longer than " . self::USERNAME_MAX_LENGTH . " characters.");
+            throw new ValidationException("Please enter again the Username. Username must not be longer than " .
+                                          self::USERNAME_MAX_LENGTH . " characters.");
         }
         $this->username = $username;
     }
@@ -133,7 +142,8 @@ class User extends AbstractDTO {
      */
     public function setPassword(string $password) : void {
         if (mb_strlen($password) > self::PASSWORD_MAX_LENGTH) {
-            throw new ValidationException("Please enter a new Password. Password must not be longer than " . self::PASSWORD_MAX_LENGTH . " characters.");
+            throw new ValidationException("Please enter a new Password. Password must not be longer than " .
+                                          self::PASSWORD_MAX_LENGTH . " characters.");
         }
         $this->password = $password;
     }
@@ -175,7 +185,8 @@ class User extends AbstractDTO {
             throw new ValidationException("Invalid email format.");
         }
         if (mb_strlen($email) > self::EMAIL_MAX_LENGTH) {
-            throw new ValidationException("Please enter a new Email. Email must not be longer than " . self::EMAIL_MAX_LENGTH . " characters.");
+            throw new ValidationException("Please enter a new Email. Email must not be longer than " .
+                                          self::EMAIL_MAX_LENGTH . " characters.");
         }
         $this->email = $email;
     }
@@ -235,7 +246,7 @@ class User extends AbstractDTO {
      * @author PE-Oliver89
      * @since  2024-03-28
      */
-    public function getIsDeleted(): bool {
+    public function getIsDeleted() : bool {
         return $this->isDeleted;
     }
     
@@ -248,8 +259,49 @@ class User extends AbstractDTO {
      * @author PE-Oliver89
      * @since  2024-03-28
      */
-    public function setIsDeleted(bool $isDeleted): void {
+    public function setIsDeleted(bool $isDeleted) : void {
         $this->isDeleted = $isDeleted;
     }
+    
+    /**
+     * TODO: Function documentation validateForUserCreate
+     * @return bool
+     *
+     * @throws ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-01
+     */
+    public function validateForUserCreate() : bool {
+        if (empty($this->username)) {
+            throw new ValidationException("Please enter a Username.");
+        }
+        if (empty($this->password)) {
+            throw new ValidationException("Please enter a Password.");
+        }
+        if (empty($this->email)) {
+            throw new ValidationException("Please enter an Email.");
+        }
+        return true;
+    }
+    
+    /**
+     * TODO: Function documentation validateForUserDelete
+     * @return bool
+     *
+     * @throws ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-01
+     */
+    public function validateForUserDelete() : bool {
+        if (empty($this->username)) {
+            throw new ValidationException("Please enter a Username.");
+        }
+        return true;
+    }
+    
+    
+    private function setUserGroupId(int $user_group_id) {}
     
 }

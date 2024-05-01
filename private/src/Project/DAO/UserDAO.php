@@ -102,14 +102,13 @@ class UserDAO implements IDAO {
         if (!($dto instanceof User)) {
             throw new RuntimeException("Passed object is not an instance of User.");
         }
-        $dto->validateForDbCreation();
+        $dto->validateForUserCreate();
         
         $connection = DBConnectionService::getConnection();
         $statement = $connection->prepare(self::CREATE_QUERY_INSERT);
         $statement->bindValue(":username", $dto->getUsername(), PDO::PARAM_STR);
         $statement->bindValue(":password", $dto->getPassword(), PDO::PARAM_STR);
         $statement->bindValue(":email", $dto->getEmail(), PDO::PARAM_STR);
-        $statement->bindValue(":group_id", $dto->getGroupId(), PDO::PARAM_STR);
         $statement->execute();
         
         $new_id = (int) $connection->lastInsertId();
@@ -138,14 +137,13 @@ class UserDAO implements IDAO {
         if (!($dto instanceof User)) {
             throw new RuntimeException("Passed object is not an instance of User.");
         }
-        $dto->validateForDbUpdate();
+        $dto->validateForUserCreate();
         
         $connection = DBConnectionService::getConnection();
         $statement = $connection->prepare(self::UPDATE_QUERY);
         $statement->bindValue(":username", $dto->getUsername(), PDO::PARAM_STR);
         $statement->bindValue(":password", $dto->getPassword(), PDO::PARAM_STR);
         $statement->bindValue(":email", $dto->getEmail(), PDO::PARAM_STR);
-        $statement->bindValue(":group_id", $dto->getGroupId(), PDO::PARAM_STR);
         $statement->bindValue(":user_id", $dto->getId(), PDO::PARAM_INT);
         $statement->execute();
         
@@ -174,7 +172,7 @@ class UserDAO implements IDAO {
         if (!($dto instanceof User)) {
             throw new RuntimeException("Passed object is not an instance of User.");
         }
-        $dto->validateForDbDelete();
+        $dto->validateForUserDelete();
         
         $connection = DBConnectionService::getConnection();
         
@@ -194,4 +192,5 @@ class UserDAO implements IDAO {
             }
         }
     }
+    
 }

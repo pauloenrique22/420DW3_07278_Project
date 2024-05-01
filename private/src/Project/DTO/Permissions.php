@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * 420DW3_07278_Project Permissions.php
  *
