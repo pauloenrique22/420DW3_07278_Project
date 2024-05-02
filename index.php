@@ -10,22 +10,23 @@ declare(strict_types=1);
  */
 require_once 'private/helpers/autoloader.php';
 require_once "private/helpers/init.php";
+
 use Project\Application;
-use Teacher\GivenCode\Domain\CallableRoute;
 use Teacher\GivenCode\Domain\WebpageRoute;
+use Teacher\GivenCode\Services\InternalRouter;
+use Teacher\GivenCode\Exceptions\ValidationException;
+
 /*
  * Student name: Paulo Enrique Oliveira Silva
  * Student number: 2311209
  */
 
-//use Teacher\Examples\ApplicationExample;
-
-Debug::$DEBUG_MODE = false;
+Debug::$DEBUG_MODE = true;
 
 // TODO @Students You should create your own 'application'-style class and use it here
-// You can base yourself on my own 'Teacher\Examples\ApplicationExample' class;
-// in it you can use my 'Teacher\GivenCode\Services\InternalRouter' class wich is given code.
 $application = new Application();
 $application->getRouter()->addRoute(new WebpageRoute("/", "Project/login.php"));
+#$application->getRouter()->addRoute(new WebpageRoute("/index", "Project/login.php"));
+#$application->getRouter()->addRoute(new WebpageRoute("/login", "Project/login.php"));
 $application->run();
 

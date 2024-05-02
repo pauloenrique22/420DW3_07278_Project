@@ -79,26 +79,30 @@ class User extends AbstractDTO {
     /**
      * TODO: Function documentation fromDbArray
      *
-     * @param array $dbAssocArray
+     * @param array $dbArray
      * @return User
      *
+     * @throws ValidationException
      * @author PE-Oliver89
      * @since  2024-03-28
      */
-    public static function fromDbArray(array $dbAssocArray) : User {
-        $object = new self();
-        //$object->setId((int) $dbAssocArray['user_id']);
-        $object->setUsername($dbAssocArray['username']);
-        $object->setPassword($dbAssocArray['password']);
-        $object->setEmail($dbAssocArray['email']);
-        $object->setUserGroupId($dbAssocArray['user_group_id']);
-        $object->setCreatedAt(
-            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_created"])
+    public static function fromDbArray(array $dbArray) : User {
+        $user = new self();
+        $user->setId((int) $dbArray['user_id']);
+        $user->setUsername($dbArray['username']);
+        $user->setPassword($dbArray['password']);
+        
+        if (isset($dbArray['email'])) {
+            $user->setEmail($dbArray['email']);
+        }
+        $user->setUserGroupId($dbArray['user_group_id']);
+        $user->setCreatedAt(
+            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbArray["date_created"])
         );
-        $object->setUpdatedAt(
-            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_modified"])
+        $user->setUpdatedAt(
+            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbArray["date_modified"])
         );
-        return $object;
+        return $user;
     }
     
     /**
@@ -302,6 +306,8 @@ class User extends AbstractDTO {
     }
     
     
-    private function setUserGroupId(int $user_group_id) {}
+    public function setUserGroupId(int $user_group_id) {
+        $this->userGroupId = $user_group_id;
+    }
     
 }

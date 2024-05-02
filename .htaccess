@@ -1,5 +1,8 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /420DW3_07278_Project/
 
-RewriteEngine On
-RewriteBase /420DW3_07278_Project/
-RewriteCond %{REQUEST_URI} !^(.*/public/.*|.*/index.php|/420DW3_07278_Project/)$
-RewriteRule ^.*$ /420DW3_07278_Project/index.php [L,QSA]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

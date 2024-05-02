@@ -10,8 +10,29 @@ declare(strict_types=1);
 
 include_once __DIR__ . "/../../../private/helpers/init.php";
 
+use Project\Services\LoginHandler;
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+require_once PRJ_SRC_DIR . "Project\Services\loginHandler.php";
+$error = '';
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["username"]) && isset($_POST["password"])) {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        
+        $loginHandler = new loginHandler();
+        try {
+            $loginHandler->login($username, $password);
+            header("Location: HomePage.php");
+            exit;
+        } catch (\Exception $exception) {
+            $error = $exception->getMessage();
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -31,7 +52,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php if (!empty($error)): ?>
         <p><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
-    <form action="<?= WEB_ROOT_DIR . 'api/doLogin' ?>" method="post">
+    <!--form action="<?= WEB_ROOT_DIR . 'Project/Services/loginHandler.php' ?>" method="post"-->
+    <form action="" method="post">
         <h1>Welcome</h1>
         <div class="css-login-box">
             <input type="text" name="username" placeholder="Username" required>
@@ -54,4 +76,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </form>
 </div>
 </body>
+<footer>
+    <p class="footer-text">designed by <a href="https://br.freepik.com/vetores-gratis/fundo-gradiente-preto-com-cubos_19538131.htm#query=plano%20de%20fundo%20para%20sites&position=30&from_view=keyword&track=ais&uuid=2b9efc2d-4088-4cd1-824e-40763da61012">Freepik</a></p>
+</footer>
 </html>

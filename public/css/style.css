@@ -1,14 +1,14 @@
 @import "bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,11 @@ body{
 .login-background {
     background: url('../images/Project/main.jpg') no-repeat;
     background-size: cover;
-    background-position: left;
+}
+
+.home-background {
+    background: url('../images/Project/homePage.jpg') no-repeat;
+    background-size: cover;
 }
 
 .container {
@@ -30,19 +34,12 @@ body{
     color: white;
     border-radius: 15px;
     padding: 30px 40px;
-    position: fixed; /* Alterado para posicionamento fixo */
+    /*position: relative;
+    margin-left: auto;*/
     top: 30%; /* Ainda alinha o topo do container no meio da página */
-    right: 300px; /* Define a distância do lado direito */
+    right: 10px; /* Define a distância do lado direito */
     transform: translateX(20%); /* Ainda corrige o alinhamento vertical */
 }
-
-/*
-.container:hover {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-    transform: scale(1.02);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}*/
-
 
 .container h1 {
     font-size: 1.5rem;
@@ -70,26 +67,18 @@ body{
     padding: 20px 45px 20px 20px;
 }
 
-.container .css-login-box input::placeholder{
+.container .css-login-box input::placeholder {
     color: rgba(0,255,203,.64);
 }
 
-.container .css-login-box image{
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    front-size: 20px;
-}
-
-.container.remember-forgot-check{
+.container.remember-forgot-check {
     display: flex;
     justify-content: space-between;
     font-size: 15px;
     margin: -15px 0 15px;
 }
 
-.remember-forgot-check label input{
+.remember-forgot-check label input {
     accent-color: #ffffff;
     margin-right: 3px;
 }
@@ -124,19 +113,19 @@ body{
     color: rgba(0,255,203,.64);
 }
 
-.container .register{
+.container .register {
     font-size: 14px;
     text-align: center;
     margin: 20px 0 15px;
 }
 
-.register p a{
+.register p a {
     color: #ffffff;
     text-decoration: none;
     font-weight: 600;
 }
 
-.register p a:hover{
+.register p a:hover {
     text-decoration: underline;
 }
 
@@ -224,11 +213,10 @@ body{
 
 .button-login::after {
     content: '';
-    /*width: 10px;height: 30px;*/
-    width: calc(100% + 1px); /* Largura ajustada para abranger todo o botão */
-    height: calc(100% + 1px); /* Altura ajustada para abranger todo o botão */
-    border-radius: 1px; /* Mesmo raio de borda do botão */
+    width: calc(100% + 1px);
+    height: calc(100% + 1px);
     border-radius: 40%;
+    border-radius: 1px;
     border: 0px solid #00FFCB;
     position: absolute;
     z-index: -1;
@@ -242,6 +230,7 @@ body{
     animation: none;
     display: none;
 }
+
 
 @keyframes ring {
     0% {
@@ -259,14 +248,74 @@ body{
         border-color: #00FFCB;
         box-shadow: 0 0 0 30px rgba(0, 255, 203, 0);
     }
-    /*0% {
-        width: 30px;
-        height: 30px;
-        opacity: 1;
-    }
-    100% {
-        width: 300px;
-        height: 300px;
-        opacity: 0;
-    }*/
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 50%;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-left: auto;
+}
+
+.footer-text {
+    text-align: center;
+}
+
+nav {
+    position: fixed;
+    overflow: hidden;
+    background-color: #333;
+    top: 0;
+    width: 100%;
+    z-index: 100; /* Isso garante que a barra de navegação fique acima de outros elementos da página */
+}
+
+nav::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+nav::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #00FFCB;
+    margin-bottom: 5px; /* Ajuste conforme necessário */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+    /*background-color: rgba(0, 255, 203, 0.4);*/
+    background-color: #00FFCB;
+    color: black;
+}
+
+.logout {
+    position: absolute;
+    float: right;
+    right: 0;
 }

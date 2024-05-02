@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * 420DW3_07278_Project PermissionDAO.php
  *
@@ -10,22 +11,34 @@
 namespace Project\DAO;
 
 use PDO;
+use PDOException;
 use Project\DTO\Permissions;
+use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Abstracts\IDAO;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
 class PermissionDAO implements IDAO {
     
-    private const GET_QUERY_SELECT = "SELECT * FROM `" . Permissions::TABLE_NAME . "` WHERE `permissions_id` = :permission_id;";
+    private const GET_QUERY_SELECT = "SELECT * FROM `" . Permissions::TABLE_NAME .
+    "` WHERE `permissions_id` = :permission_id;";
     
     private const CREATE_QUERY_INSERT = "INSERT INTO `" . Permissions::TABLE_NAME .
     "` (`permission_name`, `permission_description`, `user_group_id`) VALUES (:permission_name, :permission_description, :user_group_id);";
     private const UPDATE_QUERY = "UPDATE `" . Permissions::TABLE_NAME .
     "` SET `permission_name` = :permission_name, `permission_description` = :permission_description, `user_group_id` = :user_group_id WHERE `permission_id` = :permission_id;";
-    private const DELETE_QUERY = "DELETE FROM `" . Permissions::TABLE_NAME . "` WHERE `permissions_id` = :permission_id;";
+    private const DELETE_QUERY = "DELETE FROM `" . Permissions::TABLE_NAME .
+    "` WHERE `permissions_id` = :permission_id;";
     
-    public function __construct() {}
+    private PDO $connection;
+    
+    /**
+     * @param PDO $connection
+     * @throws RuntimeException
+     */
+    public function __construct(PDO $connection) {
+        $this->connection = DBConnectionService::getConnection();
+    }
     
     /**
      * TODO: Function documentation getById
@@ -177,4 +190,39 @@ class PermissionDAO implements IDAO {
             throw new RuntimeException("Error while fetching all permissions: " . $e->getMessage());
         }
     }
+    
+    /**
+     * TODO: Function documentation getUserPermissions
+     *
+     * @param int $userId
+     * @return array
+     * @throws RuntimeException
+     * @throws \Teacher\GivenCode\Exceptions\ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-01
+     */
+    public function getUserPermissions(int $userId) : array {
+        $connection = DBConnectionService::getConnection();
+        $query = "SELECT permissions_id FROM permissions
+              JOIN user_groups ON permissions.user_group_id = user_groups.user_group_id
+              JOIN users ON user_groups.user_group_id = users.user_group_id
+              WHERE users.user_id = :inputUserId";
+        
+        try {
+            $statement = $connection->prepare($query);
+            $statement->bindValue(":inputUserId", $userId, PDO::PARAM_INT);
+            $statement->execute();
+            $array = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $permissions = [];
+            
+            foreach ($array as $row) {
+                $permissions[] = Permissions::fromDbArray($row);
+            }
+            return $permissions;
+        }catch (PDOException $exception) {
+            throw new RuntimeException("Error while fetching all permissions: " . $exception->getMessage());
+        }
+    }
+    
 }

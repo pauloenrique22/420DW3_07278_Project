@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * 420DW3_07278_Project UserService.php
  *
@@ -7,23 +8,34 @@
  * (c) Copyright 2024 Paulo Enrique Oliveira Silva
  */
 
+namespace Project\Services;
+
+use Project\DAO\PermissionDAO;
 use Project\DAO\UserDAO;
 use Project\DAO\UserGroupsDAO;
 
 use Project\DTO\User;
-use Project\DTO\UserGroups;
 use Teacher\GivenCode\Abstracts\IService;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
+use Teacher\GivenCode\Services\DBConnectionService;
 
 /**
  * TODO: Class documentation UserService
  */
 class UserService implements IService {
     private UserDAO $userDao;
+    private UserGroupsDAO $userGroupDao;
+    private PermissionDAO $permissionDao;
     
+    /**
+     * @throws RuntimeException
+     */
     public function __construct() {
-        $this->userDao = new UserDAO();
+        $pdo = DBConnectionService::getConnection();
+        $this->userDao = new UserDAO($pdo);
+        $this->userGroupDao = new UserGroupsDAO($pdo);
+        $this->permissionDao = new PermissionDAO($pdo);
     }
     
     /**
@@ -37,11 +49,12 @@ class UserService implements IService {
      * @author PE-Oliver89
      * @since  2024-03-31
      */
-    public function createUser(string $username, string $password, string $email) : User {
+    public function createUser(string $username, string $password, string $email, int $userGroupId) : User {
         $user = new User();
         $user->setUsername($username);
         $user->setPassword($password);
         $user->setEmail($email);
+        $user->setUserGroupId($userGroupId);
         return $this->userDao->create($user);
     }
     
@@ -54,19 +67,6 @@ class UserService implements IService {
      */
     public function getAllUsers() : array {
         return $this->userDao->getAll();
-    }
-    
-    /**
-     * TODO: Function documentation getUserById
-     *
-     * @param int $id
-     * @return User|null
-     *
-     * @author PE-Oliver89
-     * @since  2024-03-31
-     */
-    public function getUserById(int $id) : ?User {
-        return $this->userDao->getById($id);
     }
     
     /**
@@ -101,6 +101,43 @@ class UserService implements IService {
      */
     public function deleteUser(int $id, bool $hardDelete = false) : void {
         $this->userDao->deleteById($id, $hardDelete);
+    }
+    
+    /**
+     * TODO: Function documentation authenticate
+     *
+     * @param string $username
+     * @param string $password
+     * @return int|null
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-01
+     */
+    public function authenticate(string $username, string $password) : ?int {
+        try {
+            $user = $this->userDao->getByUsername($username);
+            $user_name_ret = $user->getUsername();
+            error_log("User Authenticate Info: $user_name_ret");
+        } catch (ValidationException|RuntimeException $exception) {
+            return null;
+        }
+        if (!$user) {
+            return null;
+        }
+        
+        $user_id = $user->getId();
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        error_log("User hashed: $hashed_password");
+        return password_verify($password, $hashed_password) ? $user_id : null;
+    }
+    
+    /**
+     * @throws ValidationException
+     * @throws RuntimeException
+     */
+    public function getUserPermissions(int $userId) : array {
+        return $this->permissionDao->getUserPermissions($userId);
+        
     }
     
 }

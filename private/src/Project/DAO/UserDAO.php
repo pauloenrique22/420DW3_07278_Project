@@ -21,7 +21,7 @@ class UserDAO implements IDAO {
     
     private const GET_QUERY_SELECT = "SELECT * FROM `" . User::TABLE_NAME . "` WHERE `user_id` = :user_id;";
     private const CREATE_QUERY_INSERT = "INSERT INTO `" . User::TABLE_NAME .
-    "` (`username`, `password`, `email`,`user_group_id`, `is_deleted`) VALUES (:username, :password, :email, :group_id);";
+    "` (`username`, `password`, `email`,`user_group_id`, `is_deleted`) VALUES (:username, :password, :email, :group_id, 0);";
     private const UPDATE_QUERY = "UPDATE `" . User::TABLE_NAME .
     "` SET `user_password` = :password, `email` = :email, `group_id = :group_id` WHERE `user_id` = :user_id;";
     private const DELETE_QUERY = "DELETE FROM `" . User::TABLE_NAME . "` WHERE `user_id` = :user_id;";
@@ -51,6 +51,31 @@ class UserDAO implements IDAO {
             throw new RuntimeException("No record found for user_id# [$id].");
         }
         return User::fromDbArray($array);
+    }
+    
+    /**
+     * TODO: Function documentation getByUsername
+     *
+     * @param string $username
+     * @return User|null
+     * @throws RuntimeException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-01
+     */
+    public function getByUsername(string $username) : ?User {
+        $connection = DBConnectionService::getConnection();
+        $statement = $connection->prepare("SELECT * FROM " . User::TABLE_NAME . " WHERE username = :username LIMIT 1;");
+        $statement->bindValue(":username", $username, PDO::PARAM_STR);
+        $statement->execute();
+        
+        $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($user_data) {
+            return User::fromDbArray($user_data);
+        } else {
+            error_log("No user found for username: $username");
+            return null;
+        }
     }
     
     /**
