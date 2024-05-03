@@ -59,6 +59,21 @@ class UserService implements IService {
     }
     
     /**
+     * TODO: Function documentation getUser
+     *
+     * @param int $id
+     * @return User
+     * @throws RuntimeException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-02
+     */
+    public function getUser(int $id) : User {
+        return $this->userDao->getById($id);
+    }
+    
+    
+    /**
      * TODO: Function documentation getAllUsers
      * @return array
      *
@@ -66,7 +81,11 @@ class UserService implements IService {
      * @since  2024-03-31
      */
     public function getAllUsers() : array {
-        return $this->userDao->getAll();
+        try {
+            return $this->userDao->getAll();
+        } catch (ValidationException|RuntimeException $exception) {
+            return [$exception];
+        }
     }
     
     /**

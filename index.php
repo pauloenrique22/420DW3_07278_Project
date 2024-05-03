@@ -21,7 +21,7 @@ use Teacher\GivenCode\Exceptions\ValidationException;
  * Student number: 2311209
  */
 
-Debug::$DEBUG_MODE = true;
+Debug::$DEBUG_MODE = false;
 
 // TODO @Students You should create your own 'application'-style class and use it here
 $application = new Application();

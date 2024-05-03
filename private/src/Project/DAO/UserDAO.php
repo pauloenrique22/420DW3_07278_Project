@@ -20,6 +20,7 @@ use Teacher\GivenCode\Services\DBConnectionService;
 class UserDAO implements IDAO {
     
     private const GET_QUERY_SELECT = "SELECT * FROM `" . User::TABLE_NAME . "` WHERE `user_id` = :user_id;";
+    private const GET_QUERY_SELECT_ALL = "SELECT * FROM `" . User::TABLE_NAME . "`;";
     private const CREATE_QUERY_INSERT = "INSERT INTO `" . User::TABLE_NAME .
     "` (`username`, `password`, `email`,`user_group_id`, `is_deleted`) VALUES (:username, :password, :email, :group_id, 0);";
     private const UPDATE_QUERY = "UPDATE `" . User::TABLE_NAME .
@@ -51,6 +52,28 @@ class UserDAO implements IDAO {
             throw new RuntimeException("No record found for user_id# [$id].");
         }
         return User::fromDbArray($array);
+    }
+    
+    /**
+     * TODO: Function documentation getAll
+     * @return User|null
+     *
+     * @throws RuntimeException
+     * @throws \Teacher\GivenCode\Exceptions\ValidationException
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-02
+     */
+    public function getAll() : ?array {
+        $connection = DBConnectionService::getConnection();
+        $statement = $connection->prepare(self::GET_QUERY_SELECT_ALL);
+        $statement->execute();
+        
+        $array = $statement->fetch(PDO::FETCH_ASSOC);
+        if (!$array) {
+            throw new RuntimeException("No record found on Database.");
+        }
+        return $array;
     }
     
     /**

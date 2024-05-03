@@ -306,7 +306,7 @@ class User extends AbstractDTO {
     }
     
     
-    public function setUserGroupId(int $user_group_id) {
+    public function setUserGroupId(int $user_group_id) : void {
         $this->userGroupId = $user_group_id;
     }
     

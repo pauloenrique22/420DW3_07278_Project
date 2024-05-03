@@ -38,9 +38,7 @@ class loginHandler {
         if ($user_id === null) {
             throw new RuntimeException("User not found");
         }
-        /*if (!password_verify($password, $user->getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }*/
+        setcookie("nome_do_cookie", "valor_do_cookie", time() + (86400 * 30), "/");
         $_SESSION["LOGGED_IN_USER"] = $user_id;
         $_SESSION["permissions"] = $this->userService->getUserPermissions($user_id);
     }
