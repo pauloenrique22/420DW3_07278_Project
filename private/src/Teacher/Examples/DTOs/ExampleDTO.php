@@ -28,7 +28,7 @@ class ExampleDTO extends AbstractDTO {
      * Database table name for this DTO.
      * @const
      */
-    public const TABLE_NAME = "examples";
+    public const TABLE_NAME = "users";
     private const DESCRIPTION_MAX_LENGTH = 256;
     
     

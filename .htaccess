@@ -2,4 +2,4 @@ RewriteEngine On
 RewriteBase /420DW3_07278_Project/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /420DW3_07278_Project/index.php [L]
+RewriteRule ^ index.php [QSA,L]

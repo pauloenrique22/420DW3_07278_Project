@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php if (!empty($error)): ?>
         <p><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
-    <form action="<?= WEB_ROOT_DIR . 'Services/loginHandler.php' ?>" method="post">
+    <form action="<?= WEB_ROOT_DIR . 'Services/LoginHandler.php' ?>" method="post">
         <h1>Welcome to your Permissions Management</h1>
     </form>
 </div>

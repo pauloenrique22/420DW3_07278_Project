@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php if (!empty($error)): ?>
         <p><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
-    <form action="<?= WEB_ROOT_DIR . 'Services/loginHandler.php' ?>" method="post">
+    <form action="<?= WEB_ROOT_DIR . 'Services/LoginHandler.php' ?>" method="post">
         <h1>Au Revoir, mon ami</h1>
         <h2>GoodBye, my friend</h2>
         <h3>Adeus, meu amigo</h3>

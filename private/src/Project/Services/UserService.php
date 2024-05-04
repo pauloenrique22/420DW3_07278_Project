@@ -20,6 +20,22 @@ use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
+
+// UserService.php
+$action = $_POST['action'] ?? null;
+
+if ($action === 'createUser') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $email = $_POST['email'];
+    $userGroupId = $_POST['userGroupId'];
+    
+    $userService = new UserService();
+    $createdUser = $userService->createUser($username, $password, $email, $userGroupId);
+    
+    // Retorne os dados do usuário criado como JSON
+    echo json_encode($createdUser);
+}
 /**
  * TODO: Class documentation UserService
  */

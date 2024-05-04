@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $loginHandler = new loginHandler();
         try {
             $loginHandler->login($username, $password);
-            header("Location: HomePage.php");
+            header("Location: home");
             exit;
         } catch (\Exception $exception) {
             $error = $exception->getMessage();
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php if (!empty($error)): ?>
         <p><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
-    <!--form action="<?= WEB_ROOT_DIR . 'Project/Services/loginHandler.php' ?>" method="post"-->
+    <!--form action="<?= WEB_ROOT_DIR . 'Project/Services/LoginHandler.php' ?>" method="post"-->
     <form action="" method="post">
         <h1>Welcome</h1>
         <div class="css-login-box">

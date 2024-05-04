@@ -42,10 +42,10 @@ class InternalRouter implements IService {
      * @param string $uri_base_directory
      * @throws ValidationException
      */
-    public function __construct(string $uri_base_directory = "") {
+    public function __construct(string $uri_base_directory = "/") {
         $this->uriBaseDirectory = $uri_base_directory;
         $this->routes = new RouteCollection();
-        $this->routes->addRoute(new APIRoute("/api/exampleDTO", ExampleController::class));
+        /*$this->routes->addRoute(new APIRoute("/api/exampleDTO", ExampleController::class));
         $this->routes->addRoute(new APIRoute("/api/login", LoginController::class));
         $this->routes->addRoute(new APIRoute("/api/books", BookController::class));
         $this->routes->addRoute(new APIRoute("/api/authors", AuthorController::class));
@@ -53,7 +53,7 @@ class InternalRouter implements IService {
         $this->routes->addRoute(new WebpageRoute("/", "Teacher/Examples/example_page.php"));
         $this->routes->addRoute(new CallableRoute("/pages/login", [PageNavigator::class, "loginPage"]));
         $this->routes->addRoute(new CallableRoute("/pages/books", [PageNavigator::class, "booksManagementPage"]));
-        $this->routes->addRoute(new CallableRoute("/pages/authors", [PageNavigator::class, "authorsManagementPage"]));
+        $this->routes->addRoute(new CallableRoute("/pages/authors", [PageNavigator::class, "authorsManagementPage"]));*/
     }
     
     /**

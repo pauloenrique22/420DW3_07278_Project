@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace Project;
 
-use Project\Ennumerations\UserPermissionEnum;
+use Teacher\GivenCode\Domain\WebpageRoute;
 use Teacher\GivenCode\Exceptions\RequestException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 use Teacher\GivenCode\Services\InternalRouter;
@@ -34,15 +34,17 @@ class Application {
     public function run() : void {
         try {
             $this->router->route();
-        } catch (RequestException $e) {
-            http_response_code($e->getCode());
-            echo $e->getMessage();
-        } catch (ValidationException $e) {
+        } catch (RequestException $exception) {
+            foreach ($exception->getHttpHeaders() as $header_name => $header_value) {
+                header("$header_name: $header_value");
+            }
+            echo $exception->getMessage();
+        } catch (ValidationException $exception) {
             http_response_code(400);
-            echo $e->getMessage();
-        } catch (\Throwable $e) {
+            echo $exception->getMessage();
+        } catch (\Throwable $exception) {
             http_response_code(500);
-            echo $e->getMessage();
+            echo $exception->getMessage();
         }
     }
     
