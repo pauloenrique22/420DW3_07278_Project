@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 include_once __DIR__ . "/../../../private/helpers/init.php";
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 ?>

@@ -16,13 +16,13 @@ $loginFunctions = new LoginHandler();
 
 if(!$loginFunctions->isLoggedIn()){
     $_SESSION['error'] = 'You must be logged in to access this page.';
-    header('Location: Login.php');
+    header("Location: " . WEB_PAGES_DIR . "Project/login.php");
     exit;
 }
 
 if (!$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
     $_SESSION['error'] = 'You do not have permission to access this page.';
-    header('Location: HomePage.php');
+    header("Location: " . WEB_PAGES_DIR . "Project/HomePage.php");
     exit;
 }
 

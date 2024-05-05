@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
             $loginSuccess = $loginHandler->login($username, $password);
             if ($loginSuccess) {
-                header("Location: " . WEB_ROOT_DIR . "HomePage.php");
+                $_SESSION['loggedin'] = true;
+                header("Location: " . WEB_PAGES_DIR . "Project/HomePage.php");
                 exit;
             } else {
                 $error = "Login failed. Please check your username and password.";
