@@ -41,7 +41,6 @@ class UserGroupService implements IService {
      * TODO: Function documentation getUserGroupById
      *
      * @param int $id
-     * @return UserGroup|null
      *
      * @author PE-Oliver89
      * @since  2024-03-31

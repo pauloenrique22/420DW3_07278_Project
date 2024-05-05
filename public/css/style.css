@@ -386,3 +386,11 @@ nav li a:hover {
 .form-control {
     color: rgba(0,255,203,.64);
 }
+
+.permission-msg {
+    color: darkred;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

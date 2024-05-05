@@ -15,7 +15,9 @@ use Teacher\GivenCode\Exceptions\RequestException;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
-class UserController extends AbstractController {
+
+
+class UserController {
     private UserService $userService;
     
     public function __construct() {

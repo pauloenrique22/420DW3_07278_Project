@@ -26,9 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
         $loginHandler = new loginHandler();
         try {
-            $loginHandler->login($username, $password);
-            header("Location: home");
-            exit;
+            $loginSuccess = $loginHandler->login($username, $password);
+            if ($loginSuccess) {
+                header("Location: " . WEB_ROOT_DIR . "HomePage.php");
+                exit;
+            } else {
+                $error = "Login failed. Please check your username and password.";
+            }
         } catch (\Exception $exception) {
             $error = $exception->getMessage();
         }
@@ -49,9 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body class="login-background">
 
 <div class="container">
-    <?php if (!empty($error)): ?>
-        <p><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
     <!--form action="<?= WEB_ROOT_DIR . 'Project/Services/LoginHandler.php' ?>" method="post"-->
     <form action="" method="post">
         <h1>Welcome</h1>
@@ -61,6 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="css-login-box">
             <input type="password" name="password" placeholder="Password" required>
         </div>
+        <?php if (!empty($error)): ?>
+            <p><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
         <div class="remember-forgot-check">
             <label><input type="checkbox" name="remember"> Remember me</label>
             <a href="#forgotpassword">Forgot password?</a> <!-- Update the href when forgot password page is ready -->

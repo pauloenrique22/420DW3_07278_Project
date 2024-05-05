@@ -25,7 +25,7 @@ class User extends AbstractDTO {
     
     private const USERNAME_MAX_LENGTH = 30;
     private const EMAIL_MAX_LENGTH = 30;
-    private const PASSWORD_MAX_LENGTH = 30;
+    private const PASSWORD_MAX_LENGTH = 80;
     
     
     /* Variable */
@@ -59,20 +59,17 @@ class User extends AbstractDTO {
      * @param string $username
      * @param string $password
      * @param string $email
-     * @param int    $user_group_id
      * @return User
      *
      * @throws ValidationException
      * @author PE-Oliver89
      * @since  2024-03-28
      */
-    public static function constructorFromValues(string $username, string $password, string $email,
-                                                 int    $user_group_id) : User {
+    public static function constructorFromValues(string $username, string $password, string $email) : User {
         $object = new self();
         $object->setUsername($username);
         $object->setPassword($password);
         $object->setEmail($email);
-        $object->setUserGroupId($user_group_id);
         return $object;
     }
     
@@ -95,13 +92,7 @@ class User extends AbstractDTO {
         if (isset($dbArray['email'])) {
             $user->setEmail($dbArray['email']);
         }
-        $user->setUserGroupId($dbArray['user_group_id']);
-        $user->setCreatedAt(
-            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbArray["date_created"])
-        );
-        $user->setUpdatedAt(
-            DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbArray["date_modified"])
-        );
+        
         return $user;
     }
     

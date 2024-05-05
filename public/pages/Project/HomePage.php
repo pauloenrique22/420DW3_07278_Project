@@ -9,9 +9,10 @@ declare(strict_types=1);
  */
 include_once __DIR__ . "/../../../private/helpers/init.php";
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,8 +36,12 @@ if (session_status() === PHP_SESSION_NONE) {
     </ul>
 </nav>
 <div>
-    <?php if (!empty($error)): ?>
-        <p><?= htmlspecialchars($error) ?></p>
+    <?php
+    if (!empty($_SESSION['error'])):
+        $error = $_SESSION['error'];
+        unset($_SESSION['error']);
+        ?>
+        <p class="permission-msg"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
     <form action="<?= WEB_ROOT_DIR . 'Services/LoginHandler.php' ?>" method="post">
         <h1>Welcome to your Home Page</h1>

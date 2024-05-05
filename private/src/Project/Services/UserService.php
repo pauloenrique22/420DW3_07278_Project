@@ -18,8 +18,10 @@ use Project\DTO\User;
 use Teacher\GivenCode\Abstracts\IService;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
-use Teacher\GivenCode\Services\DBConnectionService;
+use Project\Services\DBConnectionServices;
 
+require_once dirname(__DIR__, 3) . '/helpers/init.php';
+require_once 'DBConnectionServices.php';
 
 // UserService.php
 $action = $_POST['action'] ?? null;
@@ -39,7 +41,7 @@ if ($action === 'createUser') {
 /**
  * TODO: Class documentation UserService
  */
-class UserService implements IService {
+class UserService {
     private UserDAO $userDao;
     private UserGroupsDAO $userGroupDao;
     private PermissionDAO $permissionDao;
@@ -48,7 +50,7 @@ class UserService implements IService {
      * @throws RuntimeException
      */
     public function __construct() {
-        $pdo = DBConnectionService::getConnection();
+        $pdo = DBConnectionServices::getConnection();
         $this->userDao = new UserDAO($pdo);
         $this->userGroupDao = new UserGroupsDAO($pdo);
         $this->permissionDao = new PermissionDAO($pdo);
@@ -151,19 +153,24 @@ class UserService implements IService {
     public function authenticate(string $username, string $password) : ?int {
         try {
             $user = $this->userDao->getByUsername($username);
-            $user_name_ret = $user->getUsername();
-            error_log("User Authenticate Info: $user_name_ret");
         } catch (ValidationException|RuntimeException $exception) {
+            error_log("Error Authenticate getByUsername: " . $exception->getMessage());
             return null;
         }
         if (!$user) {
+            error_log("User not found for username: $username");
             return null;
         }
         
-        $user_id = $user->getId();
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        error_log("User hashed: $hashed_password");
-        return password_verify($password, $hashed_password) ? $user_id : null;
+        error_log("User password: " . $user->getPassword());
+        
+        if (password_verify($password, $user->getPassword())) {
+            error_log("Password match");
+            return $user->getId();
+        } else {
+            error_log("Password mismatch");
+            return null;
+        }
     }
     
     /**
@@ -174,5 +181,4 @@ class UserService implements IService {
         return $this->permissionDao->getUserPermissions($userId);
         
     }
-    
 }

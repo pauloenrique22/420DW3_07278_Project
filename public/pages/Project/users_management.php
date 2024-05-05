@@ -5,23 +5,27 @@ use Project\Services\LoginHandler;
 use Project\Services\UserService;
 use Project\Controllers\UserController;
 
+require_once dirname(__DIR__, 3) . '/private/src/Project/Services/LoginHandler.php';
+require_once dirname(__DIR__, 3) . '/private/src/Project/Services/UserService.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+$userService = new UserService();
 $loginFunctions = new LoginHandler();
 
-if (!$loginFunctions->isLoggedIn() || !$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
-    header('Location: login.php');
+if(!$loginFunctions->isLoggedIn()){
+    $_SESSION['error'] = 'You must be logged in to access this page.';
+    header('Location: Login.php');
     exit;
 }
-$userService = new UserService();
-$userController = new UserController();
 
-$permissions = $_SESSION['permissions'] ?? [];
-$canCreateUsers = in_array('CREATE_USERS', $permissions);
-$canUpdateUsers = in_array('UPDATE_USERS', $permissions);
-$canDeleteUsers = in_array('DELETE_USERS', $permissions);
-$canSearchUsers = in_array('SEARCH_USERS', $permissions);
+if (!$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
+    $_SESSION['error'] = 'You do not have permission to access this page.';
+    header('Location: HomePage.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -32,28 +36,12 @@ $canSearchUsers = in_array('SEARCH_USERS', $permissions);
     <link rel="stylesheet" href="<?= WEB_CSS_DIR . 'bootstrap.min.css' ?>">
     <link rel="stylesheet" href="<?= WEB_CSS_DIR . 'style.css' ?>">
     <script src="<?= WEB_JS_DIR . 'jquery-3.7.1.min.js' ?>"></script>
-    <!--<script>
-        console.log('Testing jQuery:', $);
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            if (window.jQuery) {
-                console.log("jQuery is loaded");
-            } else {
-                console.log("jQuery is not loaded");
-            }
-        });
-    </script>-->
-    
     <script type="text/javascript" src="<?= WEB_JS_DIR . "user.js" ?>" defer></script>
     <script type="text/javascript">
         var baseUrl = '<?= WEB_ROOT_DIR ?>';
     </script>
 </head>
 <body class="forms-page">
-<div class="header-container">
-    <?php require_once 'header.php'; ?>
-</div>
 <div class="container-form">
     <h1>User Management</h1>
     <br>

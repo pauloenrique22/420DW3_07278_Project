@@ -16,6 +16,7 @@ use Project\DTO\Permissions;
 use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Abstracts\IDAO;
 use Teacher\GivenCode\Exceptions\RuntimeException;
+use Teacher\GivenCode\Exceptions\ValidationException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
 class PermissionDAO implements IDAO {
@@ -168,7 +169,7 @@ class PermissionDAO implements IDAO {
      * @return array
      *
      * @throws RuntimeException
-     * @throws \Teacher\GivenCode\Exceptions\ValidationException
+     * @throws ValidationException
      *
      * @author PE-Oliver89
      * @since  2024-03-31
@@ -194,24 +195,22 @@ class PermissionDAO implements IDAO {
     /**
      * TODO: Function documentation getUserPermissions
      *
-     * @param int $userId
-     * @return array
      * @throws RuntimeException
-     * @throws \Teacher\GivenCode\Exceptions\ValidationException
+     * @throws ValidationException
      *
      * @author PE-Oliver89
      * @since  2024-05-01
      */
     public function getUserPermissions(int $userId) : array {
         $connection = DBConnectionService::getConnection();
-        $query = "SELECT permissions_id FROM permissions
-              JOIN user_groups ON permissions.user_group_id = user_groups.user_group_id
-              JOIN users ON user_groups.user_group_id = users.user_group_id
-              WHERE users.user_id = :inputUserId";
+        $query = "SELECT p.* FROM `users` u
+        INNER JOIN `user_permissions` up ON u.user_id = up.user_id
+        INNER JOIN `permissions` p on up.permission_id = p.permission_id
+        WHERE u.user_id = :userId";
         
         try {
             $statement = $connection->prepare($query);
-            $statement->bindValue(":inputUserId", $userId, PDO::PARAM_INT);
+            $statement->bindValue(":userId", $userId, PDO::PARAM_INT);
             $statement->execute();
             $array = $statement->fetchAll(PDO::FETCH_ASSOC);
             $permissions = [];
@@ -220,9 +219,8 @@ class PermissionDAO implements IDAO {
                 $permissions[] = Permissions::fromDbArray($row);
             }
             return $permissions;
-        }catch (PDOException $exception) {
+        } catch (PDOException $exception) {
             throw new RuntimeException("Error while fetching all permissions: " . $exception->getMessage());
         }
     }
-    
 }

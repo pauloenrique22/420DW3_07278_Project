@@ -23,7 +23,8 @@ class Permissions extends AbstractDTO {
     private const PERMISSION_DESCRIPTION_MAX_LENGTH = 50;
     
     /* Variables  */
-    private string $permissionId;
+    private int $permissionId;
+    private string $permissionKey;
     private string $permissionName;
     private string $permissionDescription;
     private ?DateTime $createdAt;
@@ -42,27 +43,6 @@ class Permissions extends AbstractDTO {
     }
     
     /**
-     * TODO: Function documentation constructorFromValues
-     *
-     * @param string $permissionId
-     * @param string $permissionName
-     * @param string $permissionDescription
-     * @return Permissions
-     * @throws ValidationException
-     *
-     * @author PE-Oliver89
-     * @since  2024-03-27
-     */
-    public static function constructorFromValues(string $permissionName,
-                                                 string $permissionDescription) : Permissions {
-        $object = new self();
-        $object->setPermissionName($permissionName);
-        $object->setpermissionDescription($permissionDescription);
-        return $object;
-        
-    }
-    
-    /**
      * TODO: Function documentation fromDbArray
      *
      * @param array $dbAssocArray
@@ -74,20 +54,62 @@ class Permissions extends AbstractDTO {
      */
     public static function fromDbArray(array $dbAssocArray) : Permissions {
         $object = new self();
+        $object->setPermissionId((int) $dbAssocArray['permission_id']);
+        $object->setPermissionKey($dbAssocArray['permission_key']);
         $object->setPermissionName($dbAssocArray['permission_name']);
-        $object->setDescription($dbAssocArray['permission_description']);
-        $object->setUserGroupId($dbAssocArray['user_group_id']);
-        $object->setCreatedAt(
+        $object->setPermissionDescription($dbAssocArray['permission_description']);
+        /*$object->setCreatedAt(
             DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_created"])
         );
         $object->setUpdatedAt(
             DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_modified"])
-        );
+        );*/
         return $object;
     }
     
-    public function getPermissionId() : string {
+    /**
+     * TODO: Function documentation getPermissionId
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-04
+     */
+    public function getPermissionId() : int {
         return $this->permissionId;
+    }
+    
+    
+    /**
+     * TODO: Function documentation setPermissionId
+     *
+     * @param int $id
+     * @return void
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-05
+     */
+    public function setPermissionId(int $id) : void {
+        $this->permissionId = $id;
+    }
+    
+    /**
+     * TODO: Function documentation getPermissionKey
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-27
+     */
+    public function getPermissionKey() : string {
+        return $this->permissionKey;
+    }
+    
+    /**
+     * TODO: Function documentation setPermissionKey
+     *
+     * @author PE-Oliver89
+     * @since  2024-03-27
+     */
+    public function setPermissionKey(string $permissionKey) : void {
+        $this->permissionKey = $permissionKey;
     }
     
     /**
@@ -145,6 +167,7 @@ class Permissions extends AbstractDTO {
         }
         $this->permissionDescription = $permissionDescription;
     }
+    
     
     /**
      * TODO: Function documentation setCreatedAt
