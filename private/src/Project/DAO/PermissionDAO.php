@@ -19,17 +19,20 @@ use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
+/**
+ *
+ */
 class PermissionDAO implements IDAO {
     
     private const GET_QUERY_SELECT = "SELECT * FROM `" . Permissions::TABLE_NAME .
-    "` WHERE `permissions_id` = :permission_id;";
+    "` WHERE `permission_key` = :permission_id;";
     
     private const CREATE_QUERY_INSERT = "INSERT INTO `" . Permissions::TABLE_NAME .
-    "` (`permission_name`, `permission_description`, `user_group_id`) VALUES (:permission_name, :permission_description, :user_group_id);";
+    "` (`permission_key`,`permission_name`, `permission_description`) VALUES (:permission_key, :permission_name, :permission_description);";
     private const UPDATE_QUERY = "UPDATE `" . Permissions::TABLE_NAME .
-    "` SET `permission_name` = :permission_name, `permission_description` = :permission_description, `user_group_id` = :user_group_id WHERE `permission_id` = :permission_id;";
+    "` SET `permission_key` = :permission_key, `permission_description` = :permission_description, `user_group_id` = :user_group_id WHERE `permission_id` = :permission_id;";
     private const DELETE_QUERY = "DELETE FROM `" . Permissions::TABLE_NAME .
-    "` WHERE `permissions_id` = :permission_id;";
+    "` WHERE `permission_key` = :permission_id;";
     
     private PDO $connection;
     
@@ -37,7 +40,7 @@ class PermissionDAO implements IDAO {
      * @param PDO $connection
      * @throws RuntimeException
      */
-    public function __construct(PDO $connection) {
+    public function __construct() {
         $this->connection = DBConnectionService::getConnection();
     }
     
@@ -56,7 +59,7 @@ class PermissionDAO implements IDAO {
         
         $connection = DBConnectionService::getConnection();
         $statement = $connection->prepare(self::GET_QUERY_SELECT);
-        $statement->bindValue(":permission_id", $id, PDO::PARAM_INT);
+        $statement->bindValue(":permission_key", $id, PDO::PARAM_INT);
         $statement->execute();
         
         $array = $statement->fetch(PDO::FETCH_ASSOC);
@@ -86,9 +89,9 @@ class PermissionDAO implements IDAO {
         
         $connection = DBConnectionService::getConnection();
         $statement = $connection->prepare(self::CREATE_QUERY_INSERT);
+        $statement->bindValue(":permission_key", $dto->getPermissionKey(), PDO::PARAM_STR);
         $statement->bindValue(":permission_name", $dto->getPermissionName(), PDO::PARAM_STR);
         $statement->bindValue(":permission_description", $dto->getPermissionDescription(), PDO::PARAM_STR);
-        $statement->bindValue(":user_group_id", $dto->getUserGroupId(), PDO::PARAM_STR);
         $statement->execute();
         
         $new_id = (int) $connection->lastInsertId();

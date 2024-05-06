@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * index.php permissions_management.php
+ * permissions_management.php
  *
  * @author   PE-Oliver89
  * @since    2024-05-01
@@ -9,9 +9,20 @@ declare(strict_types=1);
  */
 include_once __DIR__ . "/../../../private/helpers/init.php";
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+$permissions = new \Project\Services\PermissionService();
+
+try {
+    $permissionDAO = new Project\DAO\PermissionDAO();
+    $permissions = $permissionDAO->getAll();
+} catch (\Teacher\GivenCode\Exceptions\ValidationException $e) {
+    $error = $e->getMessage();
+} catch (\Teacher\GivenCode\Exceptions\RuntimeException $e) {
+    $error = $e->getMessage();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +52,23 @@ if (session_status() === PHP_SESSION_NONE) {
     <form action="<?= WEB_ROOT_DIR . 'Services/LoginHandler.php' ?>" method="post">
         <h1>Welcome to your Permissions Management</h1>
     </form>
+</div>
+<div class="table-container">
+    <h2>Permissions</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <?php foreach ($permissions as $permission): ?>
+            <tr>
+                <td><?= htmlspecialchars((string) $permission->getId()) ?></td>
+                <td><?= htmlspecialchars($permission->getPermissionName()) ?></td>
+                <td><?= htmlspecialchars($permission->getPermissionDescription()) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
 </body>
 </html>

@@ -15,12 +15,19 @@ use JetBrains\PhpStorm\Pure;
 use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
+
+/**
+ *
+ */
 class UserGroup extends AbstractDTO {
     
-    public const TABLE_NAME = "User_Groups";
+    /**
+     *
+     */
+    public const TABLE_NAME = "usergroups";
     
     private const GROUP_NAME_MAX_LENGTH = 30;
-    private const GROUP_DESCRIPTION_MAX_LENGTH = 50;
+    private const GROUP_DESCRIPTION_MAX_LENGTH = 70;
     
     private string $groupName;
     private string $groupDescription;
@@ -40,8 +47,9 @@ class UserGroup extends AbstractDTO {
         return self::TABLE_NAME;
     }
     
-    protected function __construct() {
+    public function __construct() {
         parent::__construct();
+        $this->groupDescription = '';
     }
     
     /**
@@ -75,13 +83,13 @@ class UserGroup extends AbstractDTO {
         $object = new self();
         $object->setGroupName($dbAssocArray['group_name']);
         $object->setDescription($dbAssocArray['group_description']);
-        $object->setCreatedAt(
+        /*$object->setCreatedAt(
             DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_created"])
         );
         $object->setUpdatedAt(
             DateTime::createFromFormat(DB_DATETIME_FORMAT, $dbAssocArray["date_modified"])
         );
-        $object->setIsDeleted($dbAssocArray['is_deleted']);
+        $object->setIsDeleted($dbAssocArray['is_deleted']);*/
         return $object;
     }
     
@@ -113,6 +121,18 @@ class UserGroup extends AbstractDTO {
     public function getGroupName() : string {
         return $this->groupName;
     }
+    
+    /**
+     * TODO: Function documentation getDescription
+     * @return string
+     *
+     * @author PE-Oliver89
+     * @since  2024-05-05
+     */
+    public function getDescription() : string {
+        return $this->groupDescription;
+    }
+    
     
     /**
      * TODO: Function documentation setDescription

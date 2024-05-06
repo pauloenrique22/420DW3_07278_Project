@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * 420DW3_07278_Project UserGroupsDAO.php
  *
@@ -10,17 +11,25 @@
 namespace Project\DAO;
 
 use PDO;
+use PDOException;
 use Project\DTO\UserGroup;
 use Teacher\GivenCode\Abstracts\AbstractDTO;
 use Teacher\GivenCode\Abstracts\IDAO;
 use Teacher\GivenCode\Exceptions\RuntimeException;
+use Teacher\GivenCode\Exceptions\ValidationException;
 use Teacher\GivenCode\Services\DBConnectionService;
 
+/**
+ *
+ */
 class UserGroupsDAO implements IDAO {
     
-    private const GET_QUERY_SELECT = "SELECT * FROM `" . UserGroup::TABLE_NAME . "` WHERE `user_group_id` = :user_group_id;";
-    private const CREATE_QUERY_INSERT = "INSERT INTO `" . UserGroup::TABLE_NAME . "` (`group_name`, `group_description`) VALUES (:group_name, :group_description);";
-    private const UPDATE_QUERY = "UPDATE `" . UserGroup::TABLE_NAME . "` SET `group_name` = :group_name, `group_description` = :group_description WHERE `user_group_id` = :user_group_id;";
+    private const GET_QUERY_SELECT = "SELECT * FROM `" . UserGroup::TABLE_NAME .
+    "` WHERE `user_group_id` = :user_group_id;";
+    private const CREATE_QUERY_INSERT = "INSERT INTO `" . UserGroup::TABLE_NAME .
+    "` (`group_name`, `group_description`) VALUES (:group_name, :group_description);";
+    private const UPDATE_QUERY = "UPDATE `" . UserGroup::TABLE_NAME .
+    "` SET `group_name` = :group_name, `group_description` = :group_description WHERE `user_group_id` = :user_group_id;";
     private const DELETE_QUERY = "DELETE FROM `" . UserGroup::TABLE_NAME . "` WHERE `user_group_id` = :user_group_id;";
     
     public function __construct() {}
@@ -152,5 +161,23 @@ class UserGroupsDAO implements IDAO {
             throw new RuntimeException("No record found for user_group_id# [$id].");
         }
         return UserGroup::fromDbArray($array);
+    }
+    
+    public function getAll() : array {
+        $connection = DBConnectionService::getConnection();
+        
+        try {
+            $statement = $connection->prepare("SELECT * FROM `" . UserGroup::TABLE_NAME . "`;");
+            $statement->execute();
+            $array = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $userGroups = [];
+            
+            foreach ($array as $row) {
+                $userGroups[] = UserGroup::fromDbArray($row);
+            }
+            return $userGroups;
+        }catch (PDOException $e) {
+            throw new RuntimeException("Error while fetching all User Groups: " . $e->getMessage());
+        }
     }
 }

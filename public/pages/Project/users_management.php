@@ -54,22 +54,18 @@ if (!$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
                     <label for="userIdInput" class="form-label">User ID</label>
                     <input type="text" class="form-control" id="userIdInput" name="userId" placeholder="User ID" readonly>
                 </div>-->
-                <!-- Username input -->
                 <div class="input-form">
                     <label for="usernameInput" class="form-label">Username</label>
                     <input type="text" class="form-control" id="usernameInput" name="username" placeholder="Username" required>
                 </div>
-                <!-- Password input -->
                 <div class="input-form">
                     <label for="passwordInput" class="form-label">Password</label>
                     <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" required>
                 </div>
-                <!-- Email input -->
                 <div class="input-form">
                     <label for="emailInput" class="form-label">Email</label>
                     <input type="email" class="form-control" id="emailInput" name="email" placeholder="Email" required>
                 </div>
-                <!-- Form buttons -->
                 <button type="button" class="btn-create" onclick="createUser()">Create</button>
                 <button type="button" class="btn-update" onclick="updateUser()">Update</button>
                 <button type="button" class="btn-delete" onclick="deleteUser()">Delete</button>
@@ -92,7 +88,6 @@ if (!$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
                     </tr>
                     </thead>
                     <tbody id="allUsersBody">
-                    <!-- Rows will be dynamically added here -->
                     </tbody>
                 </table>
             </div>
@@ -109,7 +104,6 @@ if (!$loginFunctions->hasPermission('LOGIN_ALLOWED')) {
                         </tr>
                         </thead>
                         <tbody id="deletedUsersBody">
-                        <!-- Deleted user rows will be dynamically added here -->
                         </tbody>
                     </table>
                 </div>

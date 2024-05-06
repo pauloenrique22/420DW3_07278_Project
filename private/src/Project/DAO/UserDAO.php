@@ -22,9 +22,9 @@ class UserDAO implements IDAO {
     private const GET_QUERY_SELECT = "SELECT * FROM `" . User::TABLE_NAME . "` WHERE `user_id` = :user_id;";
     private const GET_QUERY_SELECT_ALL = "SELECT * FROM `" . User::TABLE_NAME . "`;";
     private const CREATE_QUERY_INSERT = "INSERT INTO `" . User::TABLE_NAME .
-    "` (`username`, `password`, `email`,`user_group_id`, `is_deleted`) VALUES (:username, :password, :email, :group_id, 0);";
+    "` (`username`, `password`, `email`, `is_deleted`) VALUES (:username, :password, :email,0);";
     private const UPDATE_QUERY = "UPDATE `" . User::TABLE_NAME .
-    "` SET `user_password` = :password, `email` = :email, `group_id = :group_id` WHERE `user_id` = :user_id;";
+    "` SET `user_password` = :password, `email` = :email WHERE `user_id` = :user_id;";
     private const DELETE_QUERY = "DELETE FROM `" . User::TABLE_NAME . "` WHERE `user_id` = :user_id;";
     
     public function __construct() {}

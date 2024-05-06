@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * index.php user_groups_management.php
+ * user_groups_management.php
  *
  * @author   PE-Oliver89
  * @since    2024-05-01
@@ -12,6 +12,18 @@ include_once __DIR__ . "/../../../private/helpers/init.php";
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
+$user_groups = new \Project\Services\UserGroupService();
+
+try {
+    $userGroupDAO = new Project\DAO\UserGroupsDAO();
+    $user_groups = $userGroupDAO->getAll();
+} catch (\Teacher\GivenCode\Exceptions\ValidationException $e) {
+    $error = $e->getMessage();
+} catch (\Teacher\GivenCode\Exceptions\RuntimeException $e) {
+    $error = $e->getMessage();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +53,19 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     <form action="<?= WEB_ROOT_DIR . 'Services/LoginHandler.php' ?>" method="post">
         <h1>Welcome to your User Groups Management</h1>
     </form>
+</div>
+<div class="table-container">
+    <h2>User Groups</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+        </tr>
+        <?php foreach ($user_groups as $user_group): ?>
+            <tr>
+                <td><?= htmlspecialchars($user_group->getGroupName()) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
 </body>
 </html>

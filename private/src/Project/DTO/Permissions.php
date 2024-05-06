@@ -54,7 +54,7 @@ class Permissions extends AbstractDTO {
      */
     public static function fromDbArray(array $dbAssocArray) : Permissions {
         $object = new self();
-        $object->setPermissionId((int) $dbAssocArray['permission_id']);
+        $object->setId((int) $dbAssocArray['permission_id']);
         $object->setPermissionKey($dbAssocArray['permission_key']);
         $object->setPermissionName($dbAssocArray['permission_name']);
         $object->setPermissionDescription($dbAssocArray['permission_description']);

@@ -6,18 +6,21 @@
  * @since    2024-03-28
  * (c) Copyright 2024 Paulo Enrique Oliveira Silva
  */
+declare(strict_types=1);
+
+namespace Project\Services;
 
 use Project\DAO\UserGroupsDAO;
-use Project\DTO\UserGroups;
+use Project\DTO\UserGroup;
 use Teacher\GivenCode\Abstracts\IService;
 use Teacher\GivenCode\Exceptions\RuntimeException;
 use Teacher\GivenCode\Exceptions\ValidationException;
 
 class UserGroupService implements IService {
-    private UserGroupDAO $userGroupDao;
+    public UserGroupsDAO $userGroupDao;
     
     public function __construct() {
-        $this->userGroupDao = new UserGroupDAO();
+        $this->userGroupDao = new UserGroupsDAO();
     }
     
     /**

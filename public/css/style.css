@@ -394,3 +394,8 @@ nav li a:hover {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.table-container {
+    margin: 0 auto;
+    clear: both;
+}
